@@ -1,6 +1,4 @@
-Claro! Aqui está em **Markdown** pronto para você copiar e colar no seu README:
 
-````markdown
 # Bem-vindo ao seu projeto Lovable
 
 ## Informações do projeto
