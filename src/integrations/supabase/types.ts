@@ -14,7 +14,75 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      achievements: {
+        Row: {
+          description: string | null
+          icon: string | null
+          id: string
+          title: string
+          type: string
+          unlocked_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          description?: string | null
+          icon?: string | null
+          id?: string
+          title: string
+          type: string
+          unlocked_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          description?: string | null
+          icon?: string | null
+          id?: string
+          title?: string
+          type?: string
+          unlocked_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      students: {
+        Row: {
+          age: number
+          course: string
+          created_at: string | null
+          enrollment_date: string
+          id: string
+          name: string
+          photo_url: string | null
+          status: string
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          age: number
+          course: string
+          created_at?: string | null
+          enrollment_date: string
+          id?: string
+          name: string
+          photo_url?: string | null
+          status: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          age?: number
+          course?: string
+          created_at?: string | null
+          enrollment_date?: string
+          id?: string
+          name?: string
+          photo_url?: string | null
+          status?: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
