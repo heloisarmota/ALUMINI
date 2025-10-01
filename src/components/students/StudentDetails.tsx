@@ -1,25 +1,40 @@
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
-import { Calendar, GraduationCap, User, Hash, Activity } from "lucide-react";
+import { Student } from "@/types/student";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
+import { Pencil, Trash2, Calendar, GraduationCap, User } from "lucide-react";
+import { format } from "date-fns";
 import { Separator } from "@/components/ui/separator";
-import { Student } from "@/types/student";
 
 interface StudentDetailsProps {
   student: Student | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onEdit: (student: Student) => void;
+  onDelete: (student: Student) => void;
 }
 
-export function StudentDetails({ student, open, onOpenChange }: StudentDetailsProps) {
+export function StudentDetails({
+  student,
+  open,
+  onOpenChange,
+  onEdit,
+  onDelete,
+}: StudentDetailsProps) {
   if (!student) return null;
+
+  const initials = student.name
+    .split(' ')
+    .map(n => n[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -28,78 +43,76 @@ export function StudentDetails({ student, open, onOpenChange }: StudentDetailsPr
           <DialogTitle className="text-2xl font-semibold">
             Detalhes do Aluno
           </DialogTitle>
-          <DialogDescription>
-            Informações completas do cadastro
-          </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
-                <User className="h-6 w-6 text-primary" />
-              </div>
-              <div>
-                <h3 className="font-semibold text-lg">{student.name}</h3>
-                <p className="text-sm text-muted-foreground">{student.age} anos</p>
-              </div>
+        <div className="space-y-6">
+          <div className="flex items-center gap-4">
+            <Avatar className="h-20 w-20">
+              <AvatarImage src={student.photo_url} />
+              <AvatarFallback className="text-2xl">{initials}</AvatarFallback>
+            </Avatar>
+            <div className="flex-1">
+              <h3 className="text-xl font-semibold text-foreground">{student.name}</h3>
+              <Badge variant={student.status === "Ativo" ? "default" : "secondary"}>
+                {student.status}
+              </Badge>
             </div>
-            <Badge
-              variant={student.status === "Ativo" ? "default" : "secondary"}
-              className={
-                student.status === "Ativo"
-                  ? "bg-success hover:bg-success/90"
-                  : "bg-muted"
-              }
-            >
-              {student.status}
-            </Badge>
           </div>
 
           <Separator />
 
           <div className="space-y-4">
-            <div className="flex items-start gap-3">
-              <Hash className="h-5 w-5 text-muted-foreground mt-0.5" />
-              <div className="flex-1">
-                <p className="text-sm font-medium text-muted-foreground">ID do Aluno</p>
-                <p className="text-base font-mono">{student.id}</p>
+            <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/30">
+              <User className="h-5 w-5 text-muted-foreground" />
+              <div>
+                <p className="text-sm text-muted-foreground">Idade</p>
+                <p className="font-medium">{student.age} anos</p>
               </div>
             </div>
 
-            <div className="flex items-start gap-3">
-              <GraduationCap className="h-5 w-5 text-muted-foreground mt-0.5" />
-              <div className="flex-1">
-                <p className="text-sm font-medium text-muted-foreground">Curso</p>
-                <p className="text-base">{student.course}</p>
+            <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/30">
+              <GraduationCap className="h-5 w-5 text-muted-foreground" />
+              <div>
+                <p className="text-sm text-muted-foreground">Curso</p>
+                <p className="font-medium">{student.course}</p>
               </div>
             </div>
 
-            <div className="flex items-start gap-3">
-              <Calendar className="h-5 w-5 text-muted-foreground mt-0.5" />
-              <div className="flex-1">
-                <p className="text-sm font-medium text-muted-foreground">
-                  Data de Matrícula
-                </p>
-                <p className="text-base">
-                  {format(new Date(student.enrollmentDate), "dd 'de' MMMM 'de' yyyy", {
-                    locale: ptBR,
-                  })}
+            <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/30">
+              <Calendar className="h-5 w-5 text-muted-foreground" />
+              <div>
+                <p className="text-sm text-muted-foreground">Data de Matrícula</p>
+                <p className="font-medium">
+                  {format(new Date(student.enrollmentDate), "dd/MM/yyyy")}
                 </p>
               </div>
             </div>
+          </div>
 
-            <div className="flex items-start gap-3">
-              <Activity className="h-5 w-5 text-muted-foreground mt-0.5" />
-              <div className="flex-1">
-                <p className="text-sm font-medium text-muted-foreground">
-                  Situação da Matrícula
-                </p>
-                <p className="text-base">
-                  {student.status === "Ativo" ? "Matriculado e ativo" : "Matrícula inativa"}
-                </p>
-              </div>
-            </div>
+          <Separator />
+
+          <div className="flex gap-2">
+            <Button
+              onClick={() => {
+                onEdit(student);
+                onOpenChange(false);
+              }}
+              className="flex-1 gap-2"
+            >
+              <Pencil className="h-4 w-4" />
+              Editar
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() => {
+                onDelete(student);
+                onOpenChange(false);
+              }}
+              className="flex-1 gap-2"
+            >
+              <Trash2 className="h-4 w-4" />
+              Excluir
+            </Button>
           </div>
         </div>
       </DialogContent>

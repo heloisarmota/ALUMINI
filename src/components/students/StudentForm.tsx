@@ -36,6 +36,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Student, StudentFormData } from "@/types/student";
+import { PhotoUpload } from "./PhotoUpload";
+import { useState } from "react";
 
 const courses = [
   "Engenharia de Software",
@@ -51,12 +53,13 @@ const formSchema = z.object({
   course: z.string().min(1, "Selecione um curso"),
   status: z.enum(["Ativo", "Inativo"]),
   enrollmentDate: z.string().min(1, "Selecione uma data"),
+  photo_url: z.string().optional(),
 });
 
 interface StudentFormProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (data: StudentFormData) => void;
+  onSubmit: (data: StudentFormData & { photo?: File }) => void;
   student?: Student | null;
   mode: "create" | "edit";
 }
@@ -68,6 +71,8 @@ export function StudentForm({
   student,
   mode,
 }: StudentFormProps) {
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
+  
   const form = useForm<StudentFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: student || {
@@ -76,12 +81,14 @@ export function StudentForm({
       course: "",
       status: "Ativo",
       enrollmentDate: new Date().toISOString().split("T")[0],
+      photo_url: "",
     },
   });
 
   const handleSubmit = (data: StudentFormData) => {
-    onSubmit(data);
+    onSubmit({ ...data, photo: photoFile || undefined });
     form.reset();
+    setPhotoFile(null);
   };
 
   return (
@@ -100,6 +107,12 @@ export function StudentForm({
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+            <PhotoUpload
+              value={student?.photo_url}
+              onChange={setPhotoFile}
+              studentName={form.watch("name")}
+            />
+            
             <FormField
               control={form.control}
               name="name"
