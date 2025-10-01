@@ -1,5 +1,5 @@
 
-# Bem-vindo ao seu projeto Lovable
+# ❤️ Bem-vindo ao seu projeto Lovable ❤️
 
 ## Informações do projeto
 
