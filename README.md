@@ -1,7 +1,26 @@
 
 # ❤️ Bem-vindo ao seu projeto Lovable ❤️
 
-## Informações do projeto
+
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=30&pause=1000&color=F735D7&width=435&lines=Informa%C3%A7%C3%B5es+do+Projeto)](https://git.io/typing-svg)
+
+## O sistema permite gerenciar alunos de forma prática e eficiente. ##
+
+O usuário pode:
+
+- Cadastrar aluno: preencher formulário e salvar; o sistema valida os dados.
+
+- Visualizar lista: ver todos os alunos com busca, filtros e ordenação.
+
+- Editar aluno: atualizar informações de um aluno; o sistema valida e salva.
+
+- Excluir aluno: remover um aluno com confirmação.
+
+- Exportar/Importar alunos: gerar ou ler arquivos PDF, CSV ou Excel.
+
+- Ver relatórios: dashboards com estatísticas e gráficos.
+
+- Tudo pensado para uma experiência intuitiva e rápida no gerenciamento de alunos.
 
 **URL**: https://lovable.dev/projects/30260212-576f-4a53-b4c6-314371d8742e
 
